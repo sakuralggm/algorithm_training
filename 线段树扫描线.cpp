@@ -69,7 +69,7 @@ int main()
     int n;
     cin >> n;
     int x1, y1, x2, y2;
-    for (int i = 1; i <= n; i ++ )
+    for (int i = 1; i <= n; i ++ ) // 要离散化，从1开始存
     {
         cin >> x1 >> y1 >> x2 >> y2;
         lines[i] = {x1, x2, y1, 1}; // 技巧，要同时存入上边和下边，分别存在i和n+i就不会和其他的扫描线发生下标冲突
