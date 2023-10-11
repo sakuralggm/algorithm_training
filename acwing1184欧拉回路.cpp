@@ -29,7 +29,7 @@ void add(int a, int b)
 
 void dfs(int u)
 {
-    while (h[u])
+    while (h[u]) // h[u]初始为0，也就是说，当h[u]>0时，u还有边未遍历
     {
         int t = h[u];
         if (e[t].used) // 删除头结点
