@@ -55,7 +55,7 @@ int main()
     ios::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
 
     cin >> type >> n >> m; // type=1无向图， type=2有向图
-    int st = 0;
+    int st = 0;  // 要求边连通，但是点不一定连通，所以st赋值为出现过的点，初始化为0保证没有边时dfs(0)会直接退出，因为h[0]=0
     for (int i = 0; i < m; i ++ )
     {
         int a, b;
