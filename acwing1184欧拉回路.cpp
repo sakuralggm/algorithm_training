@@ -32,12 +32,12 @@ void dfs(int u)
     while (h[u])
     {
         int t = h[u];
-        if (e[t].used) 
+        if (e[t].used) // 删除头结点
         {
             h[u] = e[t].ne;
             continue;
         }
-        e[t].used = true;
+        e[t].used = true; // 不是直接在链表里删，而是先标记，等下次遇到时，该边就是链表的头结点，删除更方便
         if (type == 1) e[t ^ 1].used = true;
         dfs(e[t].to);
         // 把边的编号加入栈
