@@ -31,7 +31,7 @@ void dfs(int u)
 {
     while (h[u]) // h[u]初始为0，也就是说，当h[u]>0时，u还有边未遍历
     {
-        int t = h[u];
+        int t = h[u]; // t赋值为当前弧
         if (e[t].used) // 删除头结点
         {
             h[u] = e[t].ne;
