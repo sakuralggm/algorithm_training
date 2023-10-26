@@ -29,12 +29,13 @@ vector<int> xs;
 int up[N], down[N];
 int best;
 
+// 用左右儿子的v和c来更新当前点的v和c
 void pushup(int u)
 {
     tr[u].v = max(tr[ls].v, tr[rs].v);
     tr[u].c = tr[ls].c + tr[rs].c;
 }
-
+// 单点修改
 void update(int u, int x)
 {
     if (tr[u].l == tr[u].r)
@@ -50,7 +51,7 @@ void update(int u, int x)
         pushup(u);
     }
 }
-
+// 区间查询，返回一个pair，first存区间的最大值，second存区间和
 pii query(int u, int l, int r)
 {
     if (l <= tr[u].l && tr[u].r <= r) return {tr[u].v, tr[u].c};
@@ -73,7 +74,7 @@ pii query(int u, int l, int r)
         return res;
     }
 }
-
+// 初始化线段树
 void build(int u, int l, int r)
 {
     if (l == r) tr[u] = {l, r, 0, 0};
@@ -97,29 +98,29 @@ int main()
         cin >> p[i].x >> p[i].y;
         xs.push_back(p[i].x);
     }
-    sort(xs.begin(), xs.end());
-    xs.erase(unique(xs.begin(), xs.end()), xs.end());
+    sort(xs.begin(), xs.end()); // 离散化
+    xs.erase(unique(xs.begin(), xs.end()), xs.end()); 
     for (int i = 0; i < n; i ++ )
     {
         p[i].x = lower_bound(xs.begin(), xs.end(), p[i].x) - xs.begin();
-        down[p[i].x] ++ ;
+        down[p[i].x] ++ ; // 当前列的down加1
     }
     sort(p, p + n, [&](pii a, pii b) {
         if (a.y != b.y) return a.y < b.y;
         else return a.x < b.x;
-    });
-    build(1, 0, xs.size() - 1);
+    }); // 按y从小到大排序
+    build(1, 0, xs.size() - 1); // 初始化线段树
 
     for (int i = 0; i < n; i ++ )
     {
         int j = i;
-        while (j < n && p[j].y == p[i].y)
+        while (j < n && p[j].y == p[i].y) // 求出每一行的右端点j
         {
-            down[p[j].x] -- , up[p[j].x] ++ ;
+            down[p[j].x] -- , up[p[j].x] ++ ; // 离开这一行后，up+1,down-1
             update(1, p[j].x);
             j ++ ;
         }
-        for (int k = i; k < j - 1; k ++ )
+        for (int k = i; k < j - 1; k ++ ) // 对于这一行的点，查询每两个点的区间的最大值
         {
             auto t = query(1, p[k].x + 1, p[k + 1].x - 1);
             best = max(best, min({t.x, k - i + 1, j - k - 1}));
@@ -130,7 +131,7 @@ int main()
     else 
     {
         int res = 0;
-        memcpy(down, up, sizeof up);
+        memcpy(down, up, sizeof up); // 做完一次后，up和down颠倒
         memset(up, 0, sizeof up);
         build(1, 0, xs.size() - 1); // bug3 需要重新初始化线段树，将所有结点的u,v置成0
         for (int i = 0; i < n; i ++ )
@@ -145,7 +146,7 @@ int main()
             for (int k = i; k < j - 1; k ++ )
             {
                 if (k - i + 1 < best || j - k - 1 < best) continue;
-                auto t = query(1, p[k].x + 1, p[k + 1].x - 1);
+                auto t = query(1, p[k].x + 1, p[k + 1].x - 1); // 区间查询，这里要找区间和
                 res += t.y;
             }
             i = j - 1;
