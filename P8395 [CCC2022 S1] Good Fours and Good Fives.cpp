@@ -23,15 +23,15 @@ int main()
 
     int n;
     cin >> n;
-    for (int i = 0; i <= n; i ++ )
+    for (int i = 0; i <= n; i ++ ) 
     {
         if (i % 4 == 0)
-            f[1][i] = 1;
+            f[1][i] = 1; // 从前1个数（4）当中选，和为i的方案数
     }
     for (int i = 0; i <= n; i ++ )
     {
         f[2][i] = f[1][i];
-        if (i >= 5) f[2][i] += f[2][i - 5];
+        if (i >= 5) f[2][i] += f[2][i - 5]; // 从前2个数当中选，和为i的方案数（完全背包）
     }
     cout << f[2][n];
     return 0;
