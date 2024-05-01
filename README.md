@@ -4,7 +4,7 @@
 
 ###  滑动窗口
 
-题单来源：[76. 最小覆盖子串](https://leetcode.cn/problems/minimum-window-substring/)
+题单来源：[76. 最小覆盖子串](https://leetcode.cn/problems/minimum-window-substring/solutions/2713911/liang-chong-fang-fa-cong-o52mn-dao-omnfu-3ezz)
 
 滑动窗口视频教程：[滑动窗口【基础算法精讲 03】](https://www.bilibili.com/video/BV1hd4y1r7Gq)
 
