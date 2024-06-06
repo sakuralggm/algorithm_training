@@ -62,7 +62,9 @@ int main() {
         while (q.size()) {
             BLOCK t = q.front();
             q.pop();
-            while (used[t.st] && t.st <= t.ed) t.st++;
+            while (used[t.st] && t.st <= t.ed) {
+                t.st++;
+            }
             if (t.st <= t.ed) {
                 cout << t.st << ' ';
                 used[t.st] = true;
