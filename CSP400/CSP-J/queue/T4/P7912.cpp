@@ -14,7 +14,7 @@
  *    初始写法：
  *    优化写法：
 **/
-#define LOCAL
+// #define LOCAL
 #ifdef LOCAL
 #define dbg(...) fprintf(stderr, __VA_ARGS__)
 #define debug(x) cerr << #x << ' ' <<  '=' << ' ' << x << endl
@@ -30,11 +30,54 @@ using namespace std;
 using ll = long long;
 using pii = pair<int, int>;
 
+struct BLOCK {
+    int st, ed, type;
+};
+
+queue<BLOCK> q;
+const int N = 2e5 + 10;
+int a[N];
+bool used[N];
+
 int main() {
     ios::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
 
-    int a;
-    cin >> a;
-    cout << a;
+    int n;
+    cin >> n;
+    for (int i = 1; i <= n; i++) {
+        cin >> a[i];
+    }
+    int pre = a[1], st = 1;
+    for (int i = 1; i <= n; i++) {
+        if (a[i] != pre) {
+            q.push({st, i - 1, a[i - 1]});
+            st = i;
+            pre = a[i];
+        }
+    }
+    q.push({st, n, a[n]});
+    queue<BLOCK> backup;
+    while (q.size()) {
+        backup = queue<BLOCK>();
+        while (q.size()) {
+            BLOCK t = q.front();
+            q.pop();
+            while (used[t.st] && t.st <= t.ed) t.st++;
+            if (t.st <= t.ed) {
+                cout << t.st << ' ';
+                used[t.st] = true;
+                t.st++;
+            }
+            if (t.st <= t.ed) {
+                if (backup.size() && backup.back().type == t.type) {
+                    backup.back().ed = t.ed;
+                } else {
+                    backup.push(t);
+                }
+            }
+        }
+        cout << "\n";
+        q = backup;
+    }
     return 0;
 }
