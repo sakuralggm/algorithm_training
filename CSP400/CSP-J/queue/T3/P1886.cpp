@@ -53,10 +53,6 @@ int main() {
         if (i >= k - 1) {
             cout << a[q[hh]] << ' ';
         }
-        for (int i = hh; i < tt; i++) {
-            dbg("%d ", q[i]);
-        }
-        dbg("\n");
     }
     cout << "\n";
     hh = tt = 0;
