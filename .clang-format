@@ -1,7 +1,7 @@
 {
     BasedOnStyle: Microsoft,
     BreakAfterAttributes: Leave,
-    ColumnLimit: 80,
+    ColumnLimit: 110,
     Cpp11BracedListStyle: false,
     AllowShortFunctionsOnASingleLine: Inline,
     AlignEscapedNewlines: Left,
