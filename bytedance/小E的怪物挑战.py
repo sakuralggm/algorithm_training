@@ -12,15 +12,8 @@ def solution(n: int, H: int, A: int, h: list, a: list) -> int:
             ans = max(ans, dp[i])
     return ans
 
-# 3 4 5 第一行n H A
-# 1 2 3 第二行h
-# 3 2 1 第三行a
-if __name__ == "__main__":
-    data = input().split()
-    n = int(data[0])
-    H = int(data[1])
-    A = int(data[2])
-    h = list(map(int, input().split()))
-    a = list(map(int, input().split()))
-    
-    print(solution(n, H, A, h, a))
+
+if __name__ == '__main__':
+    print(solution(3, 4, 5, [1, 2, 3], [3, 2, 1]) == 1)
+    print(solution(5, 10, 10, [6, 9, 12, 4, 7], [8, 9, 10, 2, 5]) == 2)
+    print(solution(4, 20, 25, [10, 15, 18, 22], [12, 18, 20, 26]) == 3)
