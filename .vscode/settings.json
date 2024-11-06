@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "*.asm": "assembly",
+        "*.py": "python",
+        ".clang-format": "yaml",
+        "ostream": "cpp"
+    }
+}
