@@ -1,32 +1,24 @@
-import itertools
-import random
-
-def generate_random_numbers(n):
-    return [random.randint(1, 100) for _ in range(n)]
-
-def calculate_c_sum(permutation):
-    c_sum = 0
-    for i in range(1, len(permutation) + 1):
-        subsequence = permutation[:i]
-        c_sum += max(subsequence) - min(subsequence)
-    return c_sum
-
-def main():
-    n = int(input("请输入要生成的随机数个数n: "))
-    random_numbers = generate_random_numbers(n)
-    
-    print(f"产生的{n}个随机数是: {random_numbers}")
-    
-    permutations = list(itertools.permutations(random_numbers))
-    results = []
-    
-    for perm in permutations:
-        c_sum = calculate_c_sum(perm)
-        results.append((perm, c_sum))
-        print(f"排列: {perm}, 计算结果: {c_sum}")
-    
-    min_result = min(results, key=lambda x: x[1])
-    print(f"计算结果最小的排列及其结果: {min_result[0]}, 结果: {min_result[1]}")
+def solution(n, data):
+    max_x, max_y = 1, 1
+    max_product = -1
+    current_product = 1
+    curr_x, curr_y = 1, 1
+    for i in range(n):
+        if data[i] == 0:
+            current_product = 1
+            curr_x = i + 2
+            curr_y = i + 2
+        else:
+            current_product *= data[i]
+            curr_y = i + 1
+            if current_product > max_product:
+                max_product = current_product
+                max_x = curr_x
+                max_y = curr_y
+    return [max_x, max_y]
+            
 
 if __name__ == "__main__":
-    main()
+    # Add your test cases here
+    print(solution(5, [1, 2, 4, 0, 8]) == [1, 3])
+    print(solution(7, [1, 2, 4, 8, 0, 256, 0]) == [6, 6])
