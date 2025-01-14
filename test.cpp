@@ -1,118 +1,102 @@
-#include <algorithm>
-#include <iostream>
-#include <vector>
+#define LOCAL
+#ifdef LOCAL
+#define dbg(...) fprintf(stderr, __VA_ARGS__)
+#define debug(x) cerr << #x << ' ' <<  '=' << ' ' << x << endl
+#else
+#define dbg(...)
+#define debug(x)
+#define NDEBUG
+#endif
+
+#include <bits/stdc++.h>
 using namespace std;
 
-const int N = 110;
-int a[N], b[N];
-int n;
+using ll = long long;
+using pii = pair<int, int>;
 
-bool compare(const vector<int> &arr1, const vector<int> &arr2)
-{
-    for (int i = 0; i < arr1.size(); i++)
-        if (arr1[i] != arr2[i])
-            return false;
-    return true;
-}
+const int N = 100;
+vector<int> g[N];
+pii tree[N];
+bool visited[N];
 
-void insertionStep(vector<int> &arr, int step) // 这是第step+1步
+void DFSTree(int u)
 {
-    for (int i = 0; i < step; i++)
+    visited[u] = true;
+    int q = -1;
+
+    bool first = true;
+    for (int v : g[u])
     {
-        if (arr[i] <= arr[step])
-            continue;
-        else
+        if (!visited[v])
         {
-            int temp = arr[step];
-            for (int j = step - 1; j >= i; j--)
-                arr[j + 1] = arr[j];
-            arr[i] = temp;
-            break;
+            if (first)
+            {
+                tree[u].first = v;
+                first = false;
+            }
+            else
+            {
+                tree[q].second = v;
+            }
+            q = v;
+            DFSTree(q);
         }
     }
 }
 
-void HeapAdjust(vector<int> &arr, int start, int fina)
+void DFSForest()
 {
-    int temp = arr[start];
-    for (int j = 2 * start + 1; j <= fina; j = j * 2 + 1)
+    int root = -1;
+    int q = -1;
+
+    for (int i = 0; i < 13; i++) tree[i] = {-1, -1};
+    for (int i = 0; i < 13; i++)
     {
-        if (j < fina && arr[j] < arr[j + 1])
-            j++;
-        if (temp >= arr[j])
-            break;
-        arr[start] = arr[j];
-        start = j;
+        if (!visited[i])
+        {
+            if (root == -1) root = i;
+            else tree[q].second = i;
+            q = i;
+            DFSTree(i);
+        }
     }
-    arr[start] = temp;
 }
-
-void Heap(vector<int> &arr, int step) // 这是第step+1步
-{
-    swap(arr[0], arr[arr.size() - step]);
-    HeapAdjust(arr, 0, arr.size() - step - 1);
-}
-
-
 
 int main()
 {
-    
-    cin >> n;
-    vector<int> initial(n), middle(n);
-    vector<int> temp(n);
+    ios::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
 
-    for (int i = 0; i < n; i++)
+    g[0].push_back(1);
+    g[0].push_back(4);
+    g[0].push_back(5);
+    g[0].push_back(6);
+    g[1].push_back(2);
+    g[1].push_back(3);
+    g[2].push_back(3);
+    g[2].push_back(6);
+    g[7].push_back(8);
+    g[9].push_back(10);
+    g[9].push_back(11);
+    g[9].push_back(12);
+    g[10].push_back(11);
+    g[1].push_back(0);
+    g[4].push_back(0);
+    g[5].push_back(0);
+    g[6].push_back(0);
+    g[2].push_back(1);
+    g[3].push_back(1);
+    g[3].push_back(2);
+    g[6].push_back(2);
+    g[8].push_back(7);
+    g[10].push_back(9);
+    g[11].push_back(9);
+    g[12].push_back(9);
+    g[11].push_back(10);
+
+    DFSForest();
+    for (int i = 0; i < 13; i++)
     {
-        cin >> initial[i];
-        temp[i] = initial[i];
+        cout << i << " " << tree[i].first << " " << tree[i].second << endl;
     }
-    for (int i = 0; i < n; i++)
-        cin >> middle[i];
-
-    // for (int i = 0; i < n; i++)
-    // {
-    //     insertionStep(initial, i);
-    //     if (compare(initial, middle))
-    //     {
-    //         cout << "Insertion Sort" << endl;
-    //         if (i < n - 1)
-    //         {
-    //             while (true)
-    //             {
-    //                 insertionStep(initial, i + 1); // modified
-    //                 if (compare(initial, middle))
-    //                     i++;
-    //                 else
-    //                     break;
-    //             }
-                
-    //         }
-    //         cout << initial[0];
-    //         for (int i = 1; i < n; i++)
-    //             cout << " " << initial[i];
-    //         return 0;
-    //     }
-    // }
-
-    for (int i = 0; i < n; i++)
-        initial[i] = temp[i];
-
-
-    for (int i = (initial.size() - 1) / 2; i >= 0; i--)
-        HeapAdjust(initial, i, initial.size()-1);//建初始大堆
-
-    for (int i = 1; i <= n; i++)
-    {
-        Heap(initial, i);
-        if (compare(initial, middle))
-        {
-            cout << "Heap Sort" << endl;
-            Heap(initial, i + 1);
-            cout << initial[0];
-            for (int i = 1; i < n; i++)
-                cout << " " << initial[i];
-            return 0;
-        }
-    }
+    return 0;
 }
